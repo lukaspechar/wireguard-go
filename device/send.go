@@ -17,6 +17,7 @@ import (
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
 	"golang.zx2c4.com/wireguard/conn"
+	"golang.zx2c4.com/wireguard/rustblokk"
 	"golang.zx2c4.com/wireguard/tun"
 )
 
@@ -248,6 +249,16 @@ func (device *Device) RoutineReadFromTUN() {
 			elem := elems[i]
 			elem.packet = bufs[i][offset : offset+sizes[i]]
 
+			// parse and log packets - start
+			ParseAndLogPacket(device.log, elem.packet, true)
+			// parse and log packets - end
+
+			rustRes := rustblokk.ContcatStrAndInt(">> Lukas", 83)
+			device.log.Verbosef("RUST result: %s", rustRes)
+
+			// TODO: Lukas RUST CALL TO COME HERE
+			// device.log.Verbosef("RUST lib packets sent here")
+
 			// lookup peer
 			var peer *Peer
 			switch elem.packet[0] >> 4 {
@@ -272,6 +283,7 @@ func (device *Device) RoutineReadFromTUN() {
 			if peer == nil {
 				continue
 			}
+
 			elemsForPeer, ok := elemsByPeer[peer]
 			if !ok {
 				elemsForPeer = device.GetOutboundElementsContainer()
