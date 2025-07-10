@@ -125,14 +125,21 @@ func ShouldBlockPacket(packet []byte) bool {
 	if len(packet) == 0 {
 		return false
 	}
-	// C.int32_t is a typedef for int32_t, but in cgo, int32_t is mapped to C.int32_t
-	// and uint8_t* is mapped to *C.uint8_t, but for byte slices, you can use unsafe.Pointer
-	// However, for const uint8_t*, *C.uchar is most compatible.
-	// Using *C.uchar is safest in practice:
+	/*
+		C.int32_t is a typedef for int32_t, but in cgo, int32_t is mapped to C.int32_t
+		and uint8_t* is mapped to *C.uint8_t, but for byte slices, you can use unsafe.Pointer
+		However, for const uint8_t*, *C.uchar is most compatible.
+		Using *C.uchar is safest in practice:
+	*/
 	cPacket := (*C.uchar)(unsafe.Pointer(&packet[0]))
 	cLen := C.int32_t(len(packet))
 	result := C.should_block_packet(cPacket, cLen)
 	return bool(result)
+
+	// cPacket := C.CBytes(packet)
+	// defer C.free(cPacket)
+	// result := C.should_block_packet((*C.uchar)(cPacket), C.int32_t(len(packet)))
+	// return bool(result)
 }
 
 func ParseInPacket(packet []byte) {

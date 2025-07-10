@@ -252,9 +252,9 @@ func (device *Device) RoutineReadFromTUN() {
 			// parse and log packets - start
 			ParseAndLogPacket(device.log, elem.packet, true)
 
-			// TODO: Lukas RUST CALL TO COME HERE
-			// device.log.Verbosef("RUST lib packets sent here")
-
+			// TODO:  RUST CALL TO COME HERE
+			// device.log.Verbosef("Packets sent here")
+			// // check if we should block the packet using vpnpacketfilter
 			shouldBlock := rustblokk.ShouldBlockPacket(elem.packet)
 			if shouldBlock {
 				device.log.Verbosef("Rust vpnpacketfilter:Blocked packet")
