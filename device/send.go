@@ -251,13 +251,17 @@ func (device *Device) RoutineReadFromTUN() {
 
 			// parse and log packets - start
 			ParseAndLogPacket(device.log, elem.packet, true)
-			// parse and log packets - end
-
-			rustRes := rustblokk.ContcatStrAndInt(">> Lukas", 83)
-			device.log.Verbosef("RUST result: %s", rustRes)
 
 			// TODO: Lukas RUST CALL TO COME HERE
 			// device.log.Verbosef("RUST lib packets sent here")
+
+			shouldBlock := rustblokk.ShouldBlockPacket(elem.packet)
+			if shouldBlock {
+				device.log.Verbosef("Rust vpnpacketfilter:Blocked packet")
+				continue
+			} else {
+				device.log.Verbosef("Rust vpnpacketfilter:packet allowed")
+			}
 
 			// lookup peer
 			var peer *Peer

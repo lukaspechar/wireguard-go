@@ -148,6 +148,6 @@ func ParseInPacket(packet []byte) {
 	C.parse_in_packet(cPacket, cLen)
 }
 
-func PrintUserWhitelist() {
-	C.print_user_whitelist()
-}
+// func PrintUserWhitelist() {
+// 	C.print_user_whitelist()
+// }
