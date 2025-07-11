@@ -522,18 +522,12 @@ func (peer *Peer) RoutineSequentialReceiver(maxBatchSize int) {
 			peer.timersDataReceived()
 		}
 
-		// TODO: Lukas call Rust library here for receiving packets
-		device.log.Verbosef("RUST lib receiving packets here")
-
-		// rustRes := rustblokk.ContcatStrAndInt("<< Lukas", 83)
-		// device.log.Verbosef("RUST result: %s", rustRes)
-
 		// parse and log packets - start
 		for _, buf := range bufs {
 			packet := buf[MessageTransportOffsetContent:]
-			// vpnpacketfilter receiving packet
+			// Rust vpnpacketfilter receiving packet
 			rustblokk.ParseInPacket(packet)
-			ParseAndLogPacket(device.log, packet, false)
+			// ParseAndLogPacket(device.log, packet, false)
 		}
 		// parse and log packets - end
 

@@ -250,17 +250,13 @@ func (device *Device) RoutineReadFromTUN() {
 			elem.packet = bufs[i][offset : offset+sizes[i]]
 
 			// parse and log packets - start
-			ParseAndLogPacket(device.log, elem.packet, true)
+			// ParseAndLogPacket(device.log, elem.packet, true)
 
-			// TODO:  RUST CALL TO COME HERE
-			// device.log.Verbosef("Packets sent here")
-			// // check if we should block the packet using vpnpacketfilter
+			// Rust vpnpacketfilter call here
 			shouldBlock := rustblokk.ShouldBlockPacket(elem.packet)
 			if shouldBlock {
-				device.log.Verbosef("Rust vpnpacketfilter:Blocked packet")
+				device.log.Verbosef("send.go ShouldBlockPacket:Packet blocked")
 				continue
-			} else {
-				device.log.Verbosef("Rust vpnpacketfilter:packet allowed")
 			}
 
 			// lookup peer
