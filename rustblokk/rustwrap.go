@@ -155,6 +155,6 @@ func ParseInPacket(packet []byte) {
 	C.parse_in_packet(cPacket, cLen)
 }
 
-// func PrintUserWhitelist() {
-// 	C.print_user_whitelist()
-// }
+func ReloadBlockedCountries() {
+	C.reload_blocked_countries()
+}
