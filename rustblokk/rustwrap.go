@@ -47,6 +47,18 @@ func SetCacheLocation(location string) {
 	C.set_cache_location(cstr)
 }
 
+func SetIPBlocked(blocked bool) {
+	C.set_ip_blocked(C.bool(blocked))
+}
+
+func SetUTF8Blocked(blocked bool) {
+	C.set_utf8_blocked(C.bool(blocked))
+}
+
+func IsPaused() bool {
+	return bool(C.is_paused())
+}
+
 // sets user whitelist in vpnpacketfilter_ios
 func SetUserWhitelist(list []string) {
 	// Convert Go []string to []*C.char
