@@ -255,7 +255,7 @@ func (device *Device) RoutineReadFromTUN() {
 			// Rust vpnpacketfilter call here
 			shouldBlock := rustblokk.ShouldBlockPacket(elem.packet)
 			if shouldBlock {
-				device.log.Verbosef("send.go ShouldBlockPacket:Packet blocked")
+				// device.log.Verbosef("send.go ShouldBlockPacket:Packet blocked")
 				continue
 			}
 
