@@ -128,6 +128,29 @@ func SetEnabledLists(list []string) {
 	C.set_enabled_lists(cList, cLen)
 }
 
+// sets silent domains in vpnpacketfilter_ios
+func SetSilentDomains(list []string) {
+	// Convert Go []string to []*C.char
+	cStrings := make([]*C.char, len(list))
+	for i, s := range list {
+		cStrings[i] = C.CString(s)
+	}
+
+	// ensure memory is freed after use
+	defer func() {
+		for _, s := range cStrings {
+			C.free(unsafe.Pointer(s))
+		}
+	}()
+
+	// get pointer to first element
+	cList := (**C.char)(unsafe.Pointer(&cStrings[0]))
+	cLen := C.uintptr_t(len(list))
+
+	// call C function
+	C.set_silent_domains(cList, cLen)
+}
+
 // sets the aggressive mode for filters in vpnpacketfilter_ios
 func SetAggressiveMode(isAggressive bool) {
 	C.set_aggressive_mode(C.bool(isAggressive))
